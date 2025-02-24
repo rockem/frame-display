@@ -3,26 +3,14 @@ import { useState, useEffect } from "react";
 import { Camera, User, Mail, MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
-  const { toast } = useToast();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
-
-  const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Message sent",
-      description: "Thank you for your message. I'll get back to you soon!",
-    });
-  };
 
   const galleries = [
     {
@@ -42,6 +30,18 @@ const Index = () => {
       title: "Abstract",
       image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9",
       description: "Experimental photography"
+    },
+    {
+      id: 4,
+      title: "Waterfall",
+      image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716",
+      description: "Water in motion"
+    },
+    {
+      id: 5,
+      title: "Mountains",
+      image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb",
+      description: "Majestic peaks and valleys"
     }
   ];
 
@@ -71,11 +71,10 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Tabs Section */}
-        <Tabs defaultValue="contact" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="about">About Me</TabsTrigger>
-            <TabsTrigger value="contact">Contact</TabsTrigger>
+        {/* About Tab */}
+        <Tabs defaultValue="about" className="w-full">
+          <TabsList className="w-full">
+            <TabsTrigger value="about" className="w-full">About Me</TabsTrigger>
           </TabsList>
           <TabsContent value="about" className="mt-6">
             <Card>
@@ -100,43 +99,6 @@ const Index = () => {
                     />
                   </div>
                 </div>
-              </div>
-            </Card>
-          </TabsContent>
-          <TabsContent value="contact" className="mt-6">
-            <Card>
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
-                <form onSubmit={handleContactSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium">
-                        Name
-                      </label>
-                      <Input id="name" placeholder="Your name" required />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium">
-                        Email
-                      </label>
-                      <Input id="email" type="email" placeholder="your@email.com" required />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell me about your project..."
-                      className="min-h-[150px]"
-                      required
-                    />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    Send Message
-                  </Button>
-                </form>
               </div>
             </Card>
           </TabsContent>
