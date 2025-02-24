@@ -1,12 +1,13 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Github, Instagram, Linkedin, Facebook, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -48,7 +49,6 @@ const Index = () => {
   return (
     <div className={`min-h-screen p-6 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
       <div className="max-w-6xl mx-auto space-y-12">
-        {/* Header with Navigation */}
         <header className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
             <h1 className="text-4xl font-bold tracking-tight">John Doe Photography</h1>
@@ -64,16 +64,19 @@ const Index = () => {
           </div>
         </header>
 
-        {/* Main Gallery Section */}
         <section className="py-12" id="gallery">
           <div className="grid md:grid-cols-3 gap-8">
             {galleries.map((gallery) => (
-              <Card key={gallery.id} className="overflow-hidden group">
+              <Card 
+                key={gallery.id} 
+                className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => navigate(`/gallery/${gallery.id}`)}
+              >
                 <div className="image-container h-64">
                   <img
                     src={gallery.image}
                     alt={gallery.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="p-4">
@@ -85,7 +88,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Social Links */}
         <footer className="py-6 border-t">
           <div className="flex justify-center gap-6">
             <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
