@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const { toast } = useToast();
@@ -45,57 +46,12 @@ const Index = () => {
   ];
 
   return (
-    <div className={`min-h-screen ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1472396961693-142e6e269027"
-            alt="Hero"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-        <div className="relative text-center text-white space-y-4 max-w-3xl mx-auto px-4">
-          <h1 className="text-5xl font-bold tracking-tight">John Doe Photography</h1>
-          <p className="text-xl">Capturing moments, preserving memories</p>
-          <Button variant="outline" className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
-            View Gallery
-          </Button>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-24 px-4 bg-secondary/50" id="about">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="section-heading">About Me</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                I'm a passionate photographer based in New York, specializing in landscape and urban photography. 
-                With over 5 years of experience, I strive to capture the beauty in both natural and man-made environments.
-              </p>
-              <div className="flex items-center space-x-2 text-muted-foreground">
-                <MapPin className="h-5 w-5" />
-                <span>New York, USA</span>
-              </div>
-            </div>
-            <div className="image-container rounded-lg overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
-                alt="Profile"
-                className="w-full h-[400px] object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Preview Section */}
-      <section className="py-24 px-4" id="gallery">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="section-heading text-center">Featured Work</h2>
-          <p className="section-subheading text-center mb-12">A selection of my favorite shots</p>
+    <div className={`min-h-screen p-6 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
+      <div className="max-w-6xl mx-auto space-y-12">
+        {/* Main Gallery Section */}
+        <section className="py-12" id="gallery">
+          <h1 className="text-4xl font-bold tracking-tight mb-2">John Doe Photography</h1>
+          <p className="text-xl text-muted-foreground mb-12">Capturing moments, preserving memories</p>
           <div className="grid md:grid-cols-3 gap-8">
             {galleries.map((gallery) => (
               <Card key={gallery.id} className="overflow-hidden group">
@@ -113,48 +69,79 @@ const Index = () => {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact Section */}
-      <section className="py-24 px-4 bg-secondary/50" id="contact">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="section-heading text-center">Get in Touch</h2>
-          <p className="section-subheading text-center">
-            Interested in working together? Let's connect
-          </p>
-          <form onSubmit={handleContactSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium">
-                  Name
-                </label>
-                <Input id="name" placeholder="Your name" required />
+        {/* Tabs Section */}
+        <Tabs defaultValue="contact" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="about">About Me</TabsTrigger>
+            <TabsTrigger value="contact">Contact</TabsTrigger>
+          </TabsList>
+          <TabsContent value="about" className="mt-6">
+            <Card>
+              <div className="p-6">
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                  <div className="space-y-6">
+                    <h2 className="text-2xl font-semibold">About Me</h2>
+                    <p className="text-muted-foreground leading-relaxed">
+                      I'm a passionate photographer based in New York, specializing in landscape and urban photography. 
+                      With over 5 years of experience, I strive to capture the beauty in both natural and man-made environments.
+                    </p>
+                    <div className="flex items-center space-x-2 text-muted-foreground">
+                      <MapPin className="h-5 w-5" />
+                      <span>New York, USA</span>
+                    </div>
+                  </div>
+                  <div className="image-container rounded-lg overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
+                      alt="Profile"
+                      className="w-full h-[400px] object-cover"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium">
-                  Email
-                </label>
-                <Input id="email" type="email" placeholder="your@email.com" required />
+            </Card>
+          </TabsContent>
+          <TabsContent value="contact" className="mt-6">
+            <Card>
+              <div className="p-6">
+                <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
+                <form onSubmit={handleContactSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium">
+                        Name
+                      </label>
+                      <Input id="name" placeholder="Your name" required />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium">
+                        Email
+                      </label>
+                      <Input id="email" type="email" placeholder="your@email.com" required />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium">
+                      Message
+                    </label>
+                    <Textarea
+                      id="message"
+                      placeholder="Tell me about your project..."
+                      className="min-h-[150px]"
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    Send Message
+                  </Button>
+                </form>
               </div>
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="message" className="text-sm font-medium">
-                Message
-              </label>
-              <Textarea
-                id="message"
-                placeholder="Tell me about your project..."
-                className="min-h-[150px]"
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Send Message
-            </Button>
-          </form>
-        </div>
-      </section>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
