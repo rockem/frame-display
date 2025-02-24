@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { Camera, User, Mail, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Github, Instagram, Linkedin, Facebook, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -48,10 +48,24 @@ const Index = () => {
   return (
     <div className={`min-h-screen p-6 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
       <div className="max-w-6xl mx-auto space-y-12">
+        {/* Header with Navigation */}
+        <header className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight">John Doe Photography</h1>
+            <p className="text-xl text-muted-foreground">Capturing moments, preserving memories</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" asChild>
+              <Link to="/about" className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                About Me
+              </Link>
+            </Button>
+          </div>
+        </header>
+
         {/* Main Gallery Section */}
         <section className="py-12" id="gallery">
-          <h1 className="text-4xl font-bold tracking-tight mb-2">John Doe Photography</h1>
-          <p className="text-xl text-muted-foreground mb-12">Capturing moments, preserving memories</p>
           <div className="grid md:grid-cols-3 gap-8">
             {galleries.map((gallery) => (
               <Card key={gallery.id} className="overflow-hidden group">
@@ -71,38 +85,23 @@ const Index = () => {
           </div>
         </section>
 
-        {/* About Tab */}
-        <Tabs defaultValue="about" className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="about" className="w-full">About Me</TabsTrigger>
-          </TabsList>
-          <TabsContent value="about" className="mt-6">
-            <Card>
-              <div className="p-6">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-semibold">About Me</h2>
-                    <p className="text-muted-foreground leading-relaxed">
-                      I'm a passionate photographer based in New York, specializing in landscape and urban photography. 
-                      With over 5 years of experience, I strive to capture the beauty in both natural and man-made environments.
-                    </p>
-                    <div className="flex items-center space-x-2 text-muted-foreground">
-                      <MapPin className="h-5 w-5" />
-                      <span>New York, USA</span>
-                    </div>
-                  </div>
-                  <div className="image-container rounded-lg overflow-hidden">
-                    <img
-                      src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
-                      alt="Profile"
-                      className="w-full h-[400px] object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        {/* Social Links */}
+        <footer className="py-6 border-t">
+          <div className="flex justify-center gap-6">
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Instagram className="h-6 w-6" />
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Facebook className="h-6 w-6" />
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Linkedin className="h-6 w-6" />
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Github className="h-6 w-6" />
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );
