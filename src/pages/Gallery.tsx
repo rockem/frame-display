@@ -2,6 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import Layout from "@/components/Layout";
 
 const Gallery = () => {
   const { id } = useParams();
@@ -62,8 +63,8 @@ const Gallery = () => {
   }
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <Layout>
+      <div className="space-y-8">
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -83,7 +84,7 @@ const Gallery = () => {
           ))}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

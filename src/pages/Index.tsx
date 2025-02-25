@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Github, Instagram, Linkedin, Facebook, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Github, Instagram, Linkedin, Facebook } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import Layout from "@/components/Layout";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -47,65 +46,48 @@ const Index = () => {
   ];
 
   return (
-    <div className={`min-h-screen p-6 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
-      <div className="max-w-6xl mx-auto space-y-12">
-        <header className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight">John Doe Photography</h1>
-            <p className="text-xl text-muted-foreground">Capturing moments, preserving memories</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
-              <Link to="/about" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                About Me
-              </Link>
-            </Button>
-          </div>
-        </header>
+    <Layout>
+      <section className="py-12" id="gallery">
+        <div className="grid md:grid-cols-3 gap-8">
+          {galleries.map((gallery) => (
+            <Card 
+              key={gallery.id} 
+              className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={() => navigate(`/gallery/${gallery.id}`)}
+            >
+              <div className="image-container h-64">
+                <img
+                  src={gallery.image}
+                  alt={gallery.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="font-semibold text-lg">{gallery.title}</h3>
+                <p className="text-muted-foreground text-sm">{gallery.description}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
 
-        <section className="py-12" id="gallery">
-          <div className="grid md:grid-cols-3 gap-8">
-            {galleries.map((gallery) => (
-              <Card 
-                key={gallery.id} 
-                className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => navigate(`/gallery/${gallery.id}`)}
-              >
-                <div className="image-container h-64">
-                  <img
-                    src={gallery.image}
-                    alt={gallery.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg">{gallery.title}</h3>
-                  <p className="text-muted-foreground text-sm">{gallery.description}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <footer className="py-6 border-t">
-          <div className="flex justify-center gap-6">
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Instagram className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Facebook className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Linkedin className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Github className="h-6 w-6" />
-            </a>
-          </div>
-        </footer>
-      </div>
-    </div>
+      <footer className="py-6 border-t">
+        <div className="flex justify-center gap-6">
+          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Instagram className="h-6 w-6" />
+          </a>
+          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Facebook className="h-6 w-6" />
+          </a>
+          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Linkedin className="h-6 w-6" />
+          </a>
+          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Github className="h-6 w-6" />
+          </a>
+        </div>
+      </footer>
+    </Layout>
   );
 };
 
