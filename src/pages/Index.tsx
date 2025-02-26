@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Github, Instagram, Linkedin, Facebook } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Github, Instagram, Linkedin, Facebook, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Layout from "@/components/Layout";
 
@@ -49,16 +49,25 @@ const Index = () => {
   return (
     <Layout>
       <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-4 border-b">
-        <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
-          {galleries.map((gallery) => (
-            <button
-              key={gallery.id}
-              onClick={() => navigate(`/gallery/${gallery.id}`)}
-              className="text-sm font-medium hover:text-primary whitespace-nowrap"
-            >
-              {gallery.title}
-            </button>
-          ))}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
+            {galleries.map((gallery) => (
+              <button
+                key={gallery.id}
+                onClick={() => navigate(`/gallery/${gallery.id}`)}
+                className="text-sm font-medium hover:text-primary whitespace-nowrap"
+              >
+                {gallery.title}
+              </button>
+            ))}
+          </div>
+          <Link 
+            to="/about"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary whitespace-nowrap ml-6"
+          >
+            <User className="h-4 w-4" />
+            About
+          </Link>
         </div>
       </div>
 
