@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from "react";
-import { Github, Instagram, Linkedin, Facebook } from "lucide-react";
+import { Github, Instagram, Linkedin, Facebook, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Layout from "@/components/Layout";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -18,14 +20,44 @@ const Index = () => {
     "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
   ];
 
+  const handlePrevious = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(
+        selectedImageIndex === 0 ? images.length - 1 : selectedImageIndex - 1
+      );
+    }
+  };
+
+  const handleNext = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(
+        selectedImageIndex === images.length - 1 ? 0 : selectedImageIndex + 1
+      );
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "ArrowLeft") handlePrevious();
+    if (e.key === "ArrowRight") handleNext();
+    if (e.key === "Escape") setSelectedImageIndex(null);
+  };
+
+  useEffect(() => {
+    if (selectedImageIndex !== null) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [selectedImageIndex]);
+
   return (
     <Layout>
-      <section className="py-12">
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+      <section className="py-8">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
           {images.map((image, index) => (
             <div 
               key={index} 
-              className="break-inside-avoid mb-8 overflow-hidden rounded-lg"
+              className="break-inside-avoid mb-4 overflow-hidden rounded-lg cursor-pointer"
+              onClick={() => setSelectedImageIndex(index)}
             >
               <div className="image-container">
                 <img
@@ -38,6 +70,46 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      <Dialog 
+        open={selectedImageIndex !== null} 
+        onOpenChange={() => setSelectedImageIndex(null)}
+      >
+        <DialogContent className="max-w-6xl h-[80vh] p-0 bg-transparent border-none">
+          <button
+            onClick={() => setSelectedImageIndex(null)}
+            className="absolute right-4 top-4 z-50 rounded-full bg-background/80 p-2 hover:bg-background/90"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          
+          <div className="relative h-full flex items-center justify-center">
+            {selectedImageIndex !== null && (
+              <>
+                <button
+                  onClick={handlePrevious}
+                  className="absolute left-4 z-50 rounded-full bg-background/80 p-2 hover:bg-background/90"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                
+                <img
+                  src={images[selectedImageIndex]}
+                  alt={`Gallery image ${selectedImageIndex + 1}`}
+                  className="max-h-full max-w-full object-contain"
+                />
+                
+                <button
+                  onClick={handleNext}
+                  className="absolute right-4 z-50 rounded-full bg-background/80 p-2 hover:bg-background/90"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <footer className="py-6 border-t">
         <div className="flex justify-center gap-6">
