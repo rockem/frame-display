@@ -1,12 +1,8 @@
-
-import { useParams, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { useParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 
 const Gallery = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const galleries = {
     "1": {
@@ -65,13 +61,7 @@ const Gallery = () => {
   return (
     <Layout>
       <div className="space-y-8">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate(-1)}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-          <h1 className="text-3xl font-bold">{gallery.title} Gallery</h1>
-        </div>
+        <h1 className="text-3xl font-bold">{gallery.title} Gallery</h1>
         <div className="grid md:grid-cols-2 gap-8">
           {gallery.images.map((image, index) => (
             <div key={index} className="aspect-[4/3] overflow-hidden rounded-lg">
