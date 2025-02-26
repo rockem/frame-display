@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Github, Instagram, Linkedin, Facebook } from "lucide-react";
@@ -47,19 +48,33 @@ const Index = () => {
 
   return (
     <Layout>
+      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-4 border-b">
+        <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
+          {galleries.map((gallery) => (
+            <button
+              key={gallery.id}
+              onClick={() => navigate(`/gallery/${gallery.id}`)}
+              className="text-sm font-medium hover:text-primary whitespace-nowrap"
+            >
+              {gallery.title}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <section className="py-12" id="gallery">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
           {galleries.map((gallery) => (
             <Card 
               key={gallery.id} 
-              className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow"
+              className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow break-inside-avoid mb-8"
               onClick={() => navigate(`/gallery/${gallery.id}`)}
             >
-              <div className="image-container h-64">
+              <div className="image-container">
                 <img
                   src={gallery.image}
                   alt={gallery.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div className="p-4">
