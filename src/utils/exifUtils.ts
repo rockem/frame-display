@@ -7,6 +7,7 @@ export interface ExifData {
   aperture?: string;
   iso?: string;
   focalLength?: string;
+  captureDate?: Date;
 }
 
 export async function getExifData(imageUrl: string): Promise<ExifData | null> {
@@ -52,12 +53,25 @@ export async function getExifData(imageUrl: string): Promise<ExifData | null> {
               focalLength = Math.round(focalLengthValue).toString();
             }
             
+            // Extract capture date
+            let captureDate;
+            const dateTimeOriginal = EXIF.getTag(this, "DateTimeOriginal");
+            if (dateTimeOriginal) {
+              // EXIF date format is typically "YYYY:MM:DD HH:MM:SS"
+              const parts = dateTimeOriginal.split(' ');
+              if (parts.length === 2) {
+                const datePart = parts[0].replace(/:/g, '-');
+                captureDate = new Date(`${datePart}T${parts[1]}`);
+              }
+            }
+            
             resolve({
               camera,
               shutterSpeed,
               aperture,
               iso: iso ? iso.toString() : undefined,
-              focalLength
+              focalLength,
+              captureDate
             });
           } catch (error) {
             console.error("Error parsing EXIF data:", error);

@@ -106,6 +106,9 @@ const Index = () => {
                         {exif.focalLength && (
                           <div>{exif.focalLength}mm</div>
                         )}
+                        {exif.captureDate && (
+                          <div>{exif.captureDate.toLocaleDateString()}</div>
+                        )}
                       </div>
                     </div>
                   )}

@@ -33,7 +33,22 @@ const Gallery = () => {
           })
         );
         
-        setImagesWithExif(processed);
+        // Sort by capture date (newest first)
+        const sorted = processed.sort((a, b) => {
+          const dateA = a.extractedExif?.captureDate;
+          const dateB = b.extractedExif?.captureDate;
+          
+          if (dateA && dateB) {
+            return dateB.getTime() - dateA.getTime();
+          } else if (dateA) {
+            return -1;
+          } else if (dateB) {
+            return 1;
+          }
+          return 0;
+        });
+        
+        setImagesWithExif(sorted);
       }
       
       setIsLoading(false);
@@ -84,6 +99,10 @@ const Gallery = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {imagesWithExif.map((image, index) => {
             const exif = image.extractedExif;
+            // Only show EXIF data if we have at least one valid EXIF property
+            const hasExifData = exif && (
+              exif.camera || exif.shutterSpeed || exif.aperture || exif.iso || exif.focalLength
+            );
             
             return (
               <div 
@@ -96,7 +115,7 @@ const Gallery = () => {
                   alt={image.alt}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
-                {exif && (
+                {hasExifData && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     <div className="flex items-center gap-2 text-sm">
                       <Camera className="h-4 w-4" />
@@ -114,6 +133,9 @@ const Gallery = () => {
                       )}
                       {exif.focalLength && (
                         <div>{exif.focalLength}mm</div>
+                      )}
+                      {exif.captureDate && (
+                        <div>{exif.captureDate.toLocaleDateString()}</div>
                       )}
                     </div>
                   </div>
