@@ -114,7 +114,6 @@ const Gallery = () => {
   return (
     <Layout>
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold">{gallery.title} Gallery</h1>
         <div className="grid md:grid-cols-2 gap-8">
           {imagesWithExif.map((image, index) => {
             const exif = image.extractedExif;
