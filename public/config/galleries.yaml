@@ -1,0 +1,78 @@
+
+galleries:
+  nature:
+    id: "1"
+    title: "Nature"
+    images:
+      - url: "https://images.unsplash.com/photo-1472396961693-142e6e269027"
+        alt: "Two brown deer beside trees and mountain"
+      - url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05"
+        alt: "Forest pathway"
+      - url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e"
+        alt: "Sunlight through trees"
+      - url: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f"
+        alt: "Green forest"
+
+  urban:
+    id: "2"
+    title: "Urban"
+    images:
+      - url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07"
+        alt: "Orange flowers in city"
+      - url: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000"
+        alt: "City skyline"
+      - url: "https://images.unsplash.com/photo-1444723121867-7a241cacace9"
+        alt: "Night city view"
+      - url: "https://images.unsplash.com/photo-1460472178825-e5240623afd5"
+        alt: "Urban architecture"
+
+  abstract:
+    id: "3"
+    title: "Abstract"
+    images:
+      - url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9"
+        alt: "Abstract pine trees"
+      - url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab"
+        alt: "Abstract shapes"
+      - url: "https://images.unsplash.com/photo-1507838153414-b4b713384a76"
+        alt: "Abstract colors"
+      - url: "https://images.unsplash.com/photo-1496737018672-b1a6be2e949c"
+        alt: "Abstract patterns"
+
+  waterfall:
+    id: "4"
+    title: "Waterfall"
+    images:
+      - url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716"
+        alt: "Majestic waterfall"
+      - url: "https://images.unsplash.com/photo-1546182990-dffeafbe841d"
+        alt: "Forest waterfall"
+      - url: "https://images.unsplash.com/photo-1504198322253-cfa87a0ff25f"
+        alt: "Mountain waterfall"
+      - url: "https://images.unsplash.com/photo-1498855926480-d98e83099315"
+        alt: "Stream waterfall"
+
+  mountains:
+    id: "5"
+    title: "Mountains"
+    images:
+      - url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
+        alt: "River between mountains"
+      - url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b"
+        alt: "Mountain peaks"
+      - url: "https://images.unsplash.com/photo-1456428199391-a3b1cb5e93ab"
+        alt: "Snowy mountains"
+      - url: "https://images.unsplash.com/photo-1519681393784-d120267933ba"
+        alt: "Mountain range"
+
+featured:
+  - url: "https://images.unsplash.com/photo-1472396961693-142e6e269027"
+    alt: "Two brown deer beside trees and mountain"
+  - url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07"
+    alt: "Orange flowers in city"
+  - url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9"
+    alt: "Abstract pine trees"
+  - url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716"
+    alt: "Majestic waterfall"
+  - url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
+    alt: "River between mountains"
