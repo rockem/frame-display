@@ -19,8 +19,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <header className="flex flex-col gap-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <Link to="/" className="hover:opacity-80 transition-opacity">
-              <h1 className="text-4xl font-bold tracking-tight">John Doe Photography</h1>
-              <p className="text-xl text-muted-foreground">Capturing moments, preserving memories</p>
+              <h1 className="text-4xl font-bold tracking-tight">Eli Segal Photography</h1>
+              <br/>
             </Link>
           </div>
           <div className="border-b pb-4">
