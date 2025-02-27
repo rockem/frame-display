@@ -1,3 +1,4 @@
+
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {User} from "lucide-react";
 import React, {useState, useEffect} from "react";
@@ -8,7 +9,7 @@ const SocialImageLink = ({ imageName, url }: { imageName: string, url: string })
   return (
     <a href={url}
        className="text-muted-foreground hover:text-foreground transition-colors">
-      <img src={`/images/icons/${imageName}.svg`} alt="Instagram"
+      <img src={`/images/icons/${imageName}.svg`} alt={imageName}
            className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity"/>
     </a>
   );
@@ -24,6 +25,7 @@ const Layout = ({children}: { children: React.ReactNode }) => {
   useEffect(() => {
     loadConfig().then(config => {
       const loadedCategories = Object.values(config.galleries);
+      console.log("Loaded categories for navigation:", loadedCategories);
       setCategories(loadedCategories);
       setIsLoading(false);
     });
@@ -44,7 +46,7 @@ const Layout = ({children}: { children: React.ReactNode }) => {
               <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
                 {isLoading ? (
                   <div className="text-sm">Loading...</div>
-                ) : (
+                ) : categories.length > 0 ? (
                   categories.map((category) => (
                     <button
                       key={category.id}
@@ -58,6 +60,8 @@ const Layout = ({children}: { children: React.ReactNode }) => {
                       {category.title}
                     </button>
                   ))
+                ) : (
+                  <div className="text-sm text-yellow-500">No galleries available</div>
                 )}
               </div>
               <Link
