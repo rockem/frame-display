@@ -129,28 +129,6 @@ const Gallery = () => {
                     alt={gallery.images[selectedImageIndex].alt}
                     className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
                   />
-                  {gallery.images[selectedImageIndex].exif && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4">
-                      <div className="flex items-center gap-2">
-                        <Camera className="h-4 w-4" />
-                        <span>{gallery.images[selectedImageIndex].exif.camera}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2">
-                        {gallery.images[selectedImageIndex].exif.shutterSpeed && (
-                          <div>Shutter: {gallery.images[selectedImageIndex].exif.shutterSpeed}</div>
-                        )}
-                        {gallery.images[selectedImageIndex].exif.aperture && (
-                          <div>ƒ/{gallery.images[selectedImageIndex].exif.aperture}</div>
-                        )}
-                        {gallery.images[selectedImageIndex].exif.iso && (
-                          <div>ISO {gallery.images[selectedImageIndex].exif.iso}</div>
-                        )}
-                        {gallery.images[selectedImageIndex].exif.focalLength && (
-                          <div>{gallery.images[selectedImageIndex].exif.focalLength}mm</div>
-                        )}
-                      </div>
-                    </div>
-                  )}
                 </div>
                 
                 <button
