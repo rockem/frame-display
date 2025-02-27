@@ -21,16 +21,8 @@ const Gallery = () => {
     });
   }, [id]);
 
-  if (isLoading) {
-    return <Layout>Loading...</Layout>;
-  }
-
-  if (!gallery) {
-    return <Layout>Gallery not found</Layout>;
-  }
-
   const handlePrevious = () => {
-    if (selectedImageIndex !== null) {
+    if (selectedImageIndex !== null && gallery) {
       setSelectedImageIndex(
         selectedImageIndex === 0 ? gallery.images.length - 1 : selectedImageIndex - 1
       );
@@ -38,7 +30,7 @@ const Gallery = () => {
   };
 
   const handleNext = () => {
-    if (selectedImageIndex !== null) {
+    if (selectedImageIndex !== null && gallery) {
       setSelectedImageIndex(
         selectedImageIndex === gallery.images.length - 1 ? 0 : selectedImageIndex + 1
       );
@@ -57,6 +49,14 @@ const Gallery = () => {
       return () => window.removeEventListener("keydown", handleKeyDown);
     }
   }, [selectedImageIndex]);
+
+  if (isLoading) {
+    return <Layout>Loading...</Layout>;
+  }
+
+  if (!gallery) {
+    return <Layout>Gallery not found</Layout>;
+  }
 
   return (
     <Layout>
@@ -92,7 +92,7 @@ const Gallery = () => {
           </button>
           
           <div className="relative h-full w-full flex items-center justify-center">
-            {selectedImageIndex !== null && (
+            {selectedImageIndex !== null && gallery && (
               <>
                 <button
                   onClick={handlePrevious}
