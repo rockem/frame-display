@@ -1,18 +1,24 @@
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { User } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { loadConfig } from "@/utils/config";
+import type { Gallery } from "@/utils/config";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
+  const params = useParams();
+  const currentGalleryId = params.id;
+  const [categories, setCategories] = useState<Gallery[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const categories = [
-    { id: 1, title: "Nature" },
-    { id: 2, title: "Urban" },
-    { id: 3, title: "Abstract" },
-    { id: 4, title: "Waterfall" },
-    { id: 5, title: "Mountains" }
-  ];
+  useEffect(() => {
+    loadConfig().then(config => {
+      const loadedCategories = Object.values(config.galleries);
+      setCategories(loadedCategories);
+      setIsLoading(false);
+    });
+  }, []);
 
   return (
     <div className="min-h-screen p-6">
@@ -27,15 +33,23 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="border-b pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => navigate(`/gallery/${category.id}`)}
-                    className="text-sm font-medium hover:text-primary whitespace-nowrap"
-                  >
-                    {category.title}
-                  </button>
-                ))}
+                {isLoading ? (
+                  <div className="text-sm">Loading...</div>
+                ) : (
+                  categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => navigate(`/gallery/${category.id}`)}
+                      className={`text-sm font-medium whitespace-nowrap px-3 py-1 rounded-md transition-colors ${
+                        currentGalleryId === category.id 
+                          ? "bg-primary/10 text-primary font-semibold" 
+                          : "hover:text-primary"
+                      }`}
+                    >
+                      {category.title}
+                    </button>
+                  ))
+                )}
               </div>
               <Link 
                 to="/about"
