@@ -5,34 +5,53 @@ import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { loadConfig } from "@/utils/config";
-import type { Gallery as GalleryType } from "@/utils/config";
+import type { Gallery as GalleryType, Image as ConfigImage } from "@/utils/config";
+import { getExifDataWithFallback, ExifData } from "@/utils/exifUtils";
+
+interface ImageWithExif extends ConfigImage {
+  extractedExif?: ExifData | null;
+}
 
 const Gallery = () => {
   const { id } = useParams();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [gallery, setGallery] = useState<GalleryType | null>(null);
+  const [imagesWithExif, setImagesWithExif] = useState<ImageWithExif[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadConfig().then(config => {
+    loadConfig().then(async config => {
       const foundGallery = Object.values(config.galleries).find(g => g.id === id);
       setGallery(foundGallery || null);
+      
+      if (foundGallery) {
+        // Process images to extract EXIF data
+        const processed = await Promise.all(
+          foundGallery.images.map(async (image) => {
+            const extractedExif = await getExifDataWithFallback(image.url, image.exif);
+            return { ...image, extractedExif };
+          })
+        );
+        
+        setImagesWithExif(processed);
+      }
+      
       setIsLoading(false);
     });
   }, [id]);
 
   const handlePrevious = () => {
-    if (selectedImageIndex !== null && gallery) {
+    if (selectedImageIndex !== null) {
       setSelectedImageIndex(
-        selectedImageIndex === 0 ? gallery.images.length - 1 : selectedImageIndex - 1
+        selectedImageIndex === 0 ? imagesWithExif.length - 1 : selectedImageIndex - 1
       );
     }
   };
 
   const handleNext = () => {
-    if (selectedImageIndex !== null && gallery) {
+    if (selectedImageIndex !== null) {
       setSelectedImageIndex(
-        selectedImageIndex === gallery.images.length - 1 ? 0 : selectedImageIndex + 1
+        selectedImageIndex === imagesWithExif.length - 1 ? 0 : selectedImageIndex + 1
       );
     }
   };
@@ -54,7 +73,7 @@ const Gallery = () => {
     return <Layout>Loading...</Layout>;
   }
 
-  if (!gallery) {
+  if (!gallery || imagesWithExif.length === 0) {
     return <Layout>Gallery not found</Layout>;
   }
 
@@ -63,41 +82,45 @@ const Gallery = () => {
       <div className="space-y-8">
         <h1 className="text-3xl font-bold">{gallery.title} Gallery</h1>
         <div className="grid md:grid-cols-2 gap-8">
-          {gallery.images.map((image, index) => (
-            <div 
-              key={index} 
-              className="group relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer"
-              onClick={() => setSelectedImageIndex(index)}
-            >
-              <img
-                src={image.url}
-                alt={image.alt}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-              {image.exif && (
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Camera className="h-4 w-4" />
-                    <span>{image.exif.camera}</span>
+          {imagesWithExif.map((image, index) => {
+            const exif = image.extractedExif;
+            
+            return (
+              <div 
+                key={index} 
+                className="group relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer"
+                onClick={() => setSelectedImageIndex(index)}
+              >
+                <img
+                  src={image.url}
+                  alt={image.alt}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+                {exif && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Camera className="h-4 w-4" />
+                      <span>{exif.camera || "Unknown Camera"}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
+                      {exif.shutterSpeed && (
+                        <div>Shutter: {exif.shutterSpeed}</div>
+                      )}
+                      {exif.aperture && (
+                        <div>ƒ/{exif.aperture}</div>
+                      )}
+                      {exif.iso && (
+                        <div>ISO {exif.iso}</div>
+                      )}
+                      {exif.focalLength && (
+                        <div>{exif.focalLength}mm</div>
+                      )}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
-                    {image.exif.shutterSpeed && (
-                      <div>Shutter: {image.exif.shutterSpeed}</div>
-                    )}
-                    {image.exif.aperture && (
-                      <div>ƒ/{image.exif.aperture}</div>
-                    )}
-                    {image.exif.iso && (
-                      <div>ISO {image.exif.iso}</div>
-                    )}
-                    {image.exif.focalLength && (
-                      <div>{image.exif.focalLength}mm</div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -114,7 +137,7 @@ const Gallery = () => {
           </button>
           
           <div className="relative h-full w-full flex items-center justify-center">
-            {selectedImageIndex !== null && gallery && (
+            {selectedImageIndex !== null && (
               <>
                 <button
                   onClick={handlePrevious}
@@ -125,8 +148,8 @@ const Gallery = () => {
                 
                 <div className="relative">
                   <img
-                    src={gallery.images[selectedImageIndex].url}
-                    alt={gallery.images[selectedImageIndex].alt}
+                    src={imagesWithExif[selectedImageIndex].url}
+                    alt={imagesWithExif[selectedImageIndex].alt}
                     className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
                   />
                 </div>
