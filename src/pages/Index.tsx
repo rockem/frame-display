@@ -112,23 +112,6 @@ const Index = () => {
           </div>
         </DialogContent>
       </Dialog>
-
-      <footer className="py-6 border-t">
-        <div className="flex justify-center gap-6">
-          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <img src="images/instagram.svg" alt="GitHub" className="h-6 w-6 gray" />
-          </a>
-          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <img src="images/facebook.svg" alt="GitHub" className="h-6 w-6 gray" />
-          </a>
-          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <img src="images/threads.svg" alt="GitHub" className="h-6 w-6 gray" />
-          </a>
-          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <img src="images/github.svg" alt="GitHub" className="h-6 w-6 gray" />
-          </a>
-        </div>
-      </footer>
     </Layout>
   );
 };

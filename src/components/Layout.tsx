@@ -48,6 +48,22 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </header>
         {children}
+        <footer className="py-6 border-t mt-8">
+          <div className="flex justify-center gap-6">
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <img src="/images/instagram.svg" alt="Instagram" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <img src="/images/facebook.svg" alt="Facebook" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <img src="/images/threads.svg" alt="Threads" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <img src="/images/github.svg" alt="GitHub" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );
