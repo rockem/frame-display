@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
@@ -34,21 +33,11 @@ const Gallery = () => {
         
         console.log(`Loading ${foundGallery.images.length} images for gallery:`, foundGallery.title);
         
-        // Add demo EXIF data to gallery images for testing
-        const processedImages = foundGallery.images.map((image, index) => {
-          // Generate some sample EXIF data if not present
-          const demoExif: ExifData = {
-            camera: "Canon EOS R5",
-            shutterSpeed: "1/1000",
-            aperture: "2.8",
-            iso: "100",
-            focalLength: "70",
-            captureDate: new Date()
-          };
-          
+        // Process images and keep their original EXIF data, no demo data
+        const processedImages = foundGallery.images.map((image) => {
           return { 
             ...image, 
-            extractedExif: image.exif || demoExif 
+            extractedExif: image.exif // Only use actual EXIF data if present
           };
         });
         
@@ -128,6 +117,10 @@ const Gallery = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {imagesWithExif.map((image, index) => {
             const exif = image.extractedExif;
+            // Only show EXIF data if we have at least one valid EXIF property
+            const hasExifData = exif && (
+              exif.camera || exif.shutterSpeed || exif.aperture || exif.iso || exif.focalLength
+            );
             
             return (
               <div 
@@ -145,29 +138,31 @@ const Gallery = () => {
                     e.currentTarget.alt = "Failed to load image";
                   }}
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Camera className="h-4 w-4" />
-                    <span>{exif?.camera || "Unknown Camera"}</span>
+                {hasExifData && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Camera className="h-4 w-4" />
+                      <span>{exif.camera || "Unknown Camera"}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
+                      {exif.shutterSpeed && (
+                        <div>Shutter: {exif.shutterSpeed}</div>
+                      )}
+                      {exif.aperture && (
+                        <div>ƒ/{exif.aperture}</div>
+                      )}
+                      {exif.iso && (
+                        <div>ISO {exif.iso}</div>
+                      )}
+                      {exif.focalLength && (
+                        <div>{exif.focalLength}mm</div>
+                      )}
+                      {exif.captureDate && (
+                        <div>{exif.captureDate.toLocaleDateString()}</div>
+                      )}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
-                    {exif?.shutterSpeed && (
-                      <div>Shutter: {exif.shutterSpeed}</div>
-                    )}
-                    {exif?.aperture && (
-                      <div>ƒ/{exif.aperture}</div>
-                    )}
-                    {exif?.iso && (
-                      <div>ISO {exif.iso}</div>
-                    )}
-                    {exif?.focalLength && (
-                      <div>{exif.focalLength}mm</div>
-                    )}
-                    {exif?.captureDate && (
-                      <div>{exif.captureDate.toLocaleDateString()}</div>
-                    )}
-                  </div>
-                </div>
+                )}
               </div>
             );
           })}
