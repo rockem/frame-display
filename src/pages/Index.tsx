@@ -70,6 +70,10 @@ const Index = () => {
         <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
           {images.map((image, index) => {
             const exif = image.extractedExif;
+            // Only show EXIF data if we have at least one valid EXIF property
+            const hasExifData = exif && (
+              exif.camera || exif.shutterSpeed || exif.aperture || exif.iso || exif.focalLength
+            );
             
             return (
               <div 
@@ -83,7 +87,7 @@ const Index = () => {
                     alt={image.alt}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
-                  {exif && (
+                  {hasExifData && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                       <div className="flex items-center gap-2 text-sm">
                         <Camera className="h-4 w-4" />
