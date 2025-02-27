@@ -75,7 +75,7 @@ const Index = () => {
         open={selectedImageIndex !== null} 
         onOpenChange={() => setSelectedImageIndex(null)}
       >
-        <DialogContent className="max-w-6xl h-[80vh] p-0 bg-transparent border-none">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-0 bg-transparent border-none">
           <button
             onClick={() => setSelectedImageIndex(null)}
             className="absolute right-4 top-4 z-50 rounded-full bg-background/80 p-2 hover:bg-background/90"
@@ -83,7 +83,7 @@ const Index = () => {
             <X className="h-4 w-4" />
           </button>
           
-          <div className="relative h-full flex items-center justify-center">
+          <div className="relative h-full w-full flex items-center justify-center">
             {selectedImageIndex !== null && (
               <>
                 <button
@@ -96,7 +96,7 @@ const Index = () => {
                 <img
                   src={images[selectedImageIndex]}
                   alt={`Gallery image ${selectedImageIndex + 1}`}
-                  className="max-h-full max-w-full object-contain"
+                  className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
                 />
                 
                 <button
