@@ -3,22 +3,20 @@ import { useState, useEffect } from "react";
 import { Github, Instagram, Linkedin, Facebook, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { loadConfig } from "@/utils/config";
+import type { Image } from "@/utils/config";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [images, setImages] = useState<Image[]>([]);
 
   useEffect(() => {
-    setIsLoaded(true);
+    loadConfig().then(config => {
+      setImages(config.featured);
+      setIsLoaded(true);
+    });
   }, []);
-
-  const images = [
-    "https://images.unsplash.com/photo-1472396961693-142e6e269027",
-    "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07",
-    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9",
-    "https://images.unsplash.com/photo-1433086966358-54859d0ed716",
-    "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
-  ];
 
   const handlePrevious = () => {
     if (selectedImageIndex !== null) {
@@ -49,6 +47,10 @@ const Index = () => {
     }
   }, [selectedImageIndex]);
 
+  if (!isLoaded) {
+    return <Layout>Loading...</Layout>;
+  }
+
   return (
     <Layout>
       <section className="py-8">
@@ -61,8 +63,8 @@ const Index = () => {
             >
               <div className="image-container">
                 <img
-                  src={image}
-                  alt={`Gallery image ${index + 1}`}
+                  src={image.url}
+                  alt={image.alt}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -94,8 +96,8 @@ const Index = () => {
                 </button>
                 
                 <img
-                  src={images[selectedImageIndex]}
-                  alt={`Gallery image ${selectedImageIndex + 1}`}
+                  src={images[selectedImageIndex].url}
+                  alt={images[selectedImageIndex].alt}
                   className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
                 />
                 
