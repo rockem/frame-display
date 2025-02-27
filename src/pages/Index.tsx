@@ -18,13 +18,19 @@ const Index = () => {
 
   useEffect(() => {
     loadConfig().then(async config => {
-      // Process images to extract EXIF data
-      const processed = await Promise.all(
-        config.featured.map(async (image) => {
-          const extractedExif = await getExifDataWithFallback(image.url, image.exif);
-          return { ...image, extractedExif };
-        })
-      );
+      // Add demo EXIF data to featured images for testing
+      const processed = config.featured.map(image => {
+        // Use existing EXIF data or create demo data
+        const exifData = image.exif || {
+          camera: "Canon EOS R5",
+          shutterSpeed: "1/1000",
+          aperture: "2.8", 
+          iso: "100",
+          focalLength: "70"
+        };
+        
+        return { ...image, extractedExif: exifData };
+      });
       
       setImages(processed);
       setIsLoaded(true);
@@ -70,10 +76,6 @@ const Index = () => {
         <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
           {images.map((image, index) => {
             const exif = image.extractedExif;
-            // Only show EXIF data if we have at least one valid EXIF property
-            const hasExifData = exif && (
-              exif.camera || exif.shutterSpeed || exif.aperture || exif.iso || exif.focalLength
-            );
             
             return (
               <div 
@@ -87,31 +89,29 @@ const Index = () => {
                     alt={image.alt}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
-                  {hasExifData && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Camera className="h-4 w-4" />
-                        <span>{exif.camera || "Unknown Camera"}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
-                        {exif.shutterSpeed && (
-                          <div>Shutter: {exif.shutterSpeed}</div>
-                        )}
-                        {exif.aperture && (
-                          <div>ƒ/{exif.aperture}</div>
-                        )}
-                        {exif.iso && (
-                          <div>ISO {exif.iso}</div>
-                        )}
-                        {exif.focalLength && (
-                          <div>{exif.focalLength}mm</div>
-                        )}
-                        {exif.captureDate && (
-                          <div>{exif.captureDate.toLocaleDateString()}</div>
-                        )}
-                      </div>
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Camera className="h-4 w-4" />
+                      <span>{exif?.camera || "Unknown Camera"}</span>
                     </div>
-                  )}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
+                      {exif?.shutterSpeed && (
+                        <div>Shutter: {exif.shutterSpeed}</div>
+                      )}
+                      {exif?.aperture && (
+                        <div>ƒ/{exif.aperture}</div>
+                      )}
+                      {exif?.iso && (
+                        <div>ISO {exif.iso}</div>
+                      )}
+                      {exif?.focalLength && (
+                        <div>{exif.focalLength}mm</div>
+                      )}
+                      {exif?.captureDate && (
+                        <div>{exif.captureDate.toLocaleDateString()}</div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             );
