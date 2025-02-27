@@ -18,39 +18,70 @@ const Gallery = () => {
   const [gallery, setGallery] = useState<GalleryType | null>(null);
   const [imagesWithExif, setImagesWithExif] = useState<ImageWithExif[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("Gallery page - Current gallery ID:", id);
+    
     loadConfig().then(async config => {
+      console.log("Loaded config:", Object.keys(config.galleries));
+      
       const foundGallery = Object.values(config.galleries).find(g => g.id === id);
-      setGallery(foundGallery || null);
+      console.log("Found gallery:", foundGallery?.title);
       
       if (foundGallery) {
+        setGallery(foundGallery);
+        
+        console.log(`Loading ${foundGallery.images.length} images for gallery:`, foundGallery.title);
+        
         // Process images to extract EXIF data
-        const processed = await Promise.all(
-          foundGallery.images.map(async (image) => {
-            const extractedExif = await getExifDataWithFallback(image.url, image.exif);
-            return { ...image, extractedExif };
-          })
-        );
-        
-        // Sort by capture date (newest first)
-        const sorted = processed.sort((a, b) => {
-          const dateA = a.extractedExif?.captureDate;
-          const dateB = b.extractedExif?.captureDate;
+        try {
+          const processed = await Promise.all(
+            foundGallery.images.map(async (image) => {
+              try {
+                const extractedExif = await getExifDataWithFallback(image.url, image.exif);
+                return { ...image, extractedExif };
+              } catch (err) {
+                console.error("Error processing image:", image.url, err);
+                return { ...image, extractedExif: null };
+              }
+            })
+          );
           
-          if (dateA && dateB) {
-            return dateB.getTime() - dateA.getTime();
-          } else if (dateA) {
-            return -1;
-          } else if (dateB) {
-            return 1;
-          }
-          return 0;
-        });
-        
-        setImagesWithExif(sorted);
+          console.log(`Processed ${processed.length} images with EXIF data`);
+          
+          // Sort by capture date (newest first)
+          const sorted = processed.sort((a, b) => {
+            const dateA = a.extractedExif?.captureDate;
+            const dateB = b.extractedExif?.captureDate;
+            
+            if (dateA && dateB) {
+              return dateB.getTime() - dateA.getTime();
+            } else if (dateA) {
+              return -1;
+            } else if (dateB) {
+              return 1;
+            }
+            return 0;
+          });
+          
+          setImagesWithExif(sorted);
+          setIsLoading(false);
+        } catch (err) {
+          console.error("Error processing images:", err);
+          setError("Failed to process gallery images");
+          setIsLoading(false);
+        }
+      } else {
+        console.error("Gallery not found with ID:", id);
+        setError(`Gallery not found with ID: ${id}`);
+        setGallery(null);
+        setImagesWithExif([]);
+        setIsLoading(false);
       }
-      
+    }).catch(err => {
+      console.error("Error loading config:", err);
+      setError("Failed to load gallery configuration");
       setIsLoading(false);
     });
   }, [id]);
@@ -85,11 +116,26 @@ const Gallery = () => {
   }, [selectedImageIndex]);
 
   if (isLoading) {
-    return <Layout>Loading...</Layout>;
+    return <Layout><div className="flex justify-center py-12">Loading gallery...</div></Layout>;
   }
 
-  if (!gallery || imagesWithExif.length === 0) {
-    return <Layout>Gallery not found</Layout>;
+  if (error) {
+    return <Layout><div className="text-red-500 py-12">{error}</div></Layout>;
+  }
+
+  if (!gallery) {
+    return <Layout><div className="py-12">Gallery not found</div></Layout>;
+  }
+
+  if (imagesWithExif.length === 0) {
+    return (
+      <Layout>
+        <div className="space-y-8">
+          <h1 className="text-3xl font-bold">{gallery.title} Gallery</h1>
+          <div className="py-12 text-center">No images found in this gallery</div>
+        </div>
+      </Layout>
+    );
   }
 
   return (
@@ -114,6 +160,11 @@ const Gallery = () => {
                   src={image.url}
                   alt={image.alt}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    console.error("Failed to load image:", image.url);
+                    e.currentTarget.src = "/placeholder.svg";
+                    e.currentTarget.alt = "Failed to load image";
+                  }}
                 />
                 {hasExifData && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -173,6 +224,11 @@ const Gallery = () => {
                     src={imagesWithExif[selectedImageIndex].url}
                     alt={imagesWithExif[selectedImageIndex].alt}
                     className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
+                    onError={(e) => {
+                      console.error("Failed to load image in modal:", imagesWithExif[selectedImageIndex].url);
+                      e.currentTarget.src = "/placeholder.svg";
+                      e.currentTarget.alt = "Failed to load image";
+                    }}
                   />
                 </div>
                 
