@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { loadConfig } from "@/utils/config";
 import type { Gallery as GalleryType, Image as ConfigImage } from "@/utils/config";
-import { getExifDataWithFallback, ExifData } from "@/utils/exifUtils";
+import { ExifData } from "@/utils/exifUtils";
 
 interface ImageWithExif extends ConfigImage {
   extractedExif?: ExifData | null;
@@ -23,7 +23,7 @@ const Gallery = () => {
   useEffect(() => {
     console.log("Gallery page - Current gallery ID:", id);
     
-    loadConfig().then(async config => {
+    loadConfig().then(config => {
       console.log("Loaded config:", Object.keys(config.galleries));
       
       const foundGallery = Object.values(config.galleries).find(g => g.id === id);
@@ -34,44 +34,17 @@ const Gallery = () => {
         
         console.log(`Loading ${foundGallery.images.length} images for gallery:`, foundGallery.title);
         
-        // Process images to extract EXIF data
-        try {
-          const processed = await Promise.all(
-            foundGallery.images.map(async (image) => {
-              try {
-                const extractedExif = await getExifDataWithFallback(image.url, image.exif);
-                return { ...image, extractedExif };
-              } catch (err) {
-                console.error("Error processing image:", image.url, err);
-                return { ...image, extractedExif: null };
-              }
-            })
-          );
-          
-          console.log(`Processed ${processed.length} images with EXIF data`);
-          
-          // Sort by capture date (newest first)
-          const sorted = processed.sort((a, b) => {
-            const dateA = a.extractedExif?.captureDate;
-            const dateB = b.extractedExif?.captureDate;
-            
-            if (dateA && dateB) {
-              return dateB.getTime() - dateA.getTime();
-            } else if (dateA) {
-              return -1;
-            } else if (dateB) {
-              return 1;
-            }
-            return 0;
-          });
-          
-          setImagesWithExif(sorted);
-          setIsLoading(false);
-        } catch (err) {
-          console.error("Error processing images:", err);
-          setError("Failed to process gallery images");
-          setIsLoading(false);
-        }
+        // Process images with their EXIF data (or fallbacks)
+        const processedImages = foundGallery.images.map(image => {
+          return { 
+            ...image, 
+            extractedExif: image.exif || null 
+          };
+        });
+        
+        console.log(`Processed ${processedImages.length} images with EXIF data`);
+        setImagesWithExif(processedImages);
+        setIsLoading(false);
       } else {
         console.error("Gallery not found with ID:", id);
         setError(`Gallery not found with ID: ${id}`);
