@@ -40,10 +40,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <button
                       key={category.id}
                       onClick={() => navigate(`/gallery/${category.id}`)}
-                      className={`text-sm font-medium whitespace-nowrap px-3 py-1 rounded-md transition-colors ${
+                      className={`text-sm font-medium whitespace-nowrap transition-colors ${
                         currentGalleryId === category.id 
-                          ? "text-primary border-b-2 border-primary/30" 
-                          : "hover:text-primary"
+                          ? "text-primary" 
+                          : "text-muted-foreground hover:text-primary"
                       }`}
                     >
                       {category.title}
