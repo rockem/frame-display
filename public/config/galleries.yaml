@@ -6,12 +6,36 @@ galleries:
     images:
       - url: "https://images.unsplash.com/photo-1472396961693-142e6e269027"
         alt: "Two brown deer beside trees and mountain"
+        exif:
+          camera: "Canon EOS R5"
+          shutterSpeed: "1/1000"
+          aperture: "2.8"
+          iso: "100"
+          focalLength: "70"
       - url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05"
         alt: "Forest pathway"
+        exif:
+          camera: "Sony A7 IV"
+          shutterSpeed: "1/60"
+          aperture: "4.0"
+          iso: "400"
+          focalLength: "24"
       - url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e"
         alt: "Sunlight through trees"
+        exif:
+          camera: "Nikon Z6"
+          shutterSpeed: "1/125"
+          aperture: "5.6"
+          iso: "200"
+          focalLength: "35"
       - url: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f"
         alt: "Green forest"
+        exif:
+          camera: "Canon EOS R6"
+          shutterSpeed: "1/250"
+          aperture: "3.5"
+          iso: "800"
+          focalLength: "50"
 
   urban:
     id: "2"
@@ -19,12 +43,36 @@ galleries:
     images:
       - url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07"
         alt: "Orange flowers in city"
+        exif:
+          camera: "Sony A7R V"
+          shutterSpeed: "1/2000"
+          aperture: "1.8"
+          iso: "100"
+          focalLength: "85"
       - url: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000"
         alt: "City skyline"
+        exif:
+          camera: "Canon EOS R5"
+          shutterSpeed: "1/500"
+          aperture: "8.0"
+          iso: "200"
+          focalLength: "24"
       - url: "https://images.unsplash.com/photo-1444723121867-7a241cacace9"
         alt: "Night city view"
+        exif:
+          camera: "Nikon Z7 II"
+          shutterSpeed: "2"
+          aperture: "11"
+          iso: "100"
+          focalLength: "16"
       - url: "https://images.unsplash.com/photo-1460472178825-e5240623afd5"
         alt: "Urban architecture"
+        exif:
+          camera: "Sony A7 III"
+          shutterSpeed: "1/1000"
+          aperture: "4.0"
+          iso: "400"
+          focalLength: "70"
 
   abstract:
     id: "3"
@@ -32,12 +80,36 @@ galleries:
     images:
       - url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9"
         alt: "Abstract pine trees"
+        exif:
+          camera: "Fujifilm X-T4"
+          shutterSpeed: "1/250"
+          aperture: "2.0"
+          iso: "200"
+          focalLength: "56"
       - url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab"
         alt: "Abstract shapes"
+        exif:
+          camera: "Canon EOS R6"
+          shutterSpeed: "1/125"
+          aperture: "5.6"
+          iso: "400"
+          focalLength: "100"
       - url: "https://images.unsplash.com/photo-1507838153414-b4b713384a76"
         alt: "Abstract colors"
+        exif:
+          camera: "Sony A7R IV"
+          shutterSpeed: "1/60"
+          aperture: "2.8"
+          iso: "800"
+          focalLength: "35"
       - url: "https://images.unsplash.com/photo-1496737018672-b1a6be2e949c"
         alt: "Abstract patterns"
+        exif:
+          camera: "Nikon Z6 II"
+          shutterSpeed: "1/500"
+          aperture: "4.0"
+          iso: "100"
+          focalLength: "50"
 
   waterfall:
     id: "4"
@@ -45,12 +117,36 @@ galleries:
     images:
       - url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716"
         alt: "Majestic waterfall"
+        exif:
+          camera: "Canon EOS R5"
+          shutterSpeed: "1/1000"
+          aperture: "8.0"
+          iso: "100"
+          focalLength: "16"
       - url: "https://images.unsplash.com/photo-1546182990-dffeafbe841d"
         alt: "Forest waterfall"
+        exif:
+          camera: "Sony A7 IV"
+          shutterSpeed: "1/30"
+          aperture: "11"
+          iso: "100"
+          focalLength: "24"
       - url: "https://images.unsplash.com/photo-1504198322253-cfa87a0ff25f"
         alt: "Mountain waterfall"
+        exif:
+          camera: "Nikon Z7 II"
+          shutterSpeed: "1/60"
+          aperture: "5.6"
+          iso: "400"
+          focalLength: "70"
       - url: "https://images.unsplash.com/photo-1498855926480-d98e83099315"
         alt: "Stream waterfall"
+        exif:
+          camera: "Fujifilm X-T4"
+          shutterSpeed: "1/125"
+          aperture: "4.0"
+          iso: "200"
+          focalLength: "35"
 
   mountains:
     id: "5"
@@ -58,12 +154,36 @@ galleries:
     images:
       - url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
         alt: "River between mountains"
+        exif:
+          camera: "Canon EOS R6"
+          shutterSpeed: "1/2000"
+          aperture: "8.0"
+          iso: "100"
+          focalLength: "24"
       - url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b"
         alt: "Mountain peaks"
+        exif:
+          camera: "Sony A7R V"
+          shutterSpeed: "1/500"
+          aperture: "11"
+          iso: "200"
+          focalLength: "16"
       - url: "https://images.unsplash.com/photo-1456428199391-a3b1cb5e93ab"
         alt: "Snowy mountains"
+        exif:
+          camera: "Nikon Z6"
+          shutterSpeed: "1/1000"
+          aperture: "5.6"
+          iso: "400"
+          focalLength: "70"
       - url: "https://images.unsplash.com/photo-1519681393784-d120267933ba"
         alt: "Mountain range"
+        exif:
+          camera: "Sony A7 III"
+          shutterSpeed: "1/250"
+          aperture: "4.0"
+          iso: "100"
+          focalLength: "50"
 
 featured:
   - url: "https://images.unsplash.com/photo-1472396961693-142e6e269027"

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { loadConfig } from "@/utils/config";
@@ -66,7 +66,7 @@ const Gallery = () => {
           {gallery.images.map((image, index) => (
             <div 
               key={index} 
-              className="aspect-[4/3] overflow-hidden rounded-lg cursor-pointer"
+              className="group relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer"
               onClick={() => setSelectedImageIndex(index)}
             >
               <img
@@ -74,6 +74,28 @@ const Gallery = () => {
                 alt={image.alt}
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
+              {image.exif && (
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Camera className="h-4 w-4" />
+                    <span>{image.exif.camera}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
+                    {image.exif.shutterSpeed && (
+                      <div>Shutter: {image.exif.shutterSpeed}</div>
+                    )}
+                    {image.exif.aperture && (
+                      <div>ƒ/{image.exif.aperture}</div>
+                    )}
+                    {image.exif.iso && (
+                      <div>ISO {image.exif.iso}</div>
+                    )}
+                    {image.exif.focalLength && (
+                      <div>{image.exif.focalLength}mm</div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -101,11 +123,35 @@ const Gallery = () => {
                   <ChevronLeft className="h-6 w-6" />
                 </button>
                 
-                <img
-                  src={gallery.images[selectedImageIndex].url}
-                  alt={gallery.images[selectedImageIndex].alt}
-                  className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
-                />
+                <div className="relative">
+                  <img
+                    src={gallery.images[selectedImageIndex].url}
+                    alt={gallery.images[selectedImageIndex].alt}
+                    className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
+                  />
+                  {gallery.images[selectedImageIndex].exif && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4">
+                      <div className="flex items-center gap-2">
+                        <Camera className="h-4 w-4" />
+                        <span>{gallery.images[selectedImageIndex].exif.camera}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2">
+                        {gallery.images[selectedImageIndex].exif.shutterSpeed && (
+                          <div>Shutter: {gallery.images[selectedImageIndex].exif.shutterSpeed}</div>
+                        )}
+                        {gallery.images[selectedImageIndex].exif.aperture && (
+                          <div>ƒ/{gallery.images[selectedImageIndex].exif.aperture}</div>
+                        )}
+                        {gallery.images[selectedImageIndex].exif.iso && (
+                          <div>ISO {gallery.images[selectedImageIndex].exif.iso}</div>
+                        )}
+                        {gallery.images[selectedImageIndex].exif.focalLength && (
+                          <div>{gallery.images[selectedImageIndex].exif.focalLength}mm</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
                 
                 <button
                   onClick={handleNext}

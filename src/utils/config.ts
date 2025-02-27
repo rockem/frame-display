@@ -1,9 +1,18 @@
 
 import { parse } from 'yaml';
 
+export interface ExifData {
+  camera?: string;
+  shutterSpeed?: string;
+  aperture?: string;
+  iso?: string;
+  focalLength?: string;
+}
+
 export interface Image {
   url: string;
   alt: string;
+  exif?: ExifData;
 }
 
 export interface Gallery {
