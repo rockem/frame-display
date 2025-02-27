@@ -1,17 +1,26 @@
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {User} from "lucide-react";
+import React, {useState, useEffect} from "react";
+import {loadConfig} from "@/utils/config";
+import type {Gallery} from "@/utils/config";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { User } from "lucide-react";
-import React, { useState, useEffect } from "react";
-import { loadConfig } from "@/utils/config";
-import type { Gallery } from "@/utils/config";
+const SocialImageLink = ({ imageName, url }: { imageName: string, url: string }) => {
+  return (
+    <a href={url}
+       className="text-muted-foreground hover:text-foreground transition-colors">
+      <img src={`/images/${imageName}.svg`} alt="Instagram"
+           className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity"/>
+    </a>
+  );
+}
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({children}: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const params = useParams();
   const currentGalleryId = params.id;
   const [categories, setCategories] = useState<Gallery[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(() => {
     loadConfig().then(config => {
       const loadedCategories = Object.values(config.galleries);
@@ -41,8 +50,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                       key={category.id}
                       onClick={() => navigate(`/gallery/${category.id}`)}
                       className={`text-sm font-medium whitespace-nowrap transition-colors ${
-                        currentGalleryId === category.id 
-                          ? "text-primary" 
+                        currentGalleryId === category.id
+                          ? "text-primary"
                           : "text-muted-foreground hover:text-primary"
                       }`}
                     >
@@ -51,11 +60,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   ))
                 )}
               </div>
-              <Link 
+              <Link
                 to="/about"
                 className="flex items-center gap-2 text-sm font-medium hover:text-primary whitespace-nowrap ml-6"
               >
-                <User className="h-4 w-4" />
+                <User className="h-4 w-4"/>
                 About
               </Link>
             </div>
@@ -64,18 +73,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         {children}
         <footer className="py-6 border-t mt-8">
           <div className="flex justify-center gap-6">
-            <a href="https://www.instagram.com/lesegal" className="text-muted-foreground hover:text-foreground transition-colors">
-              <img src="/images/instagram.svg" alt="Instagram" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
-            </a>
-            <a href="https://www.facebook.com/lesegal" className="text-muted-foreground hover:text-foreground transition-colors">
-              <img src="/images/facebook.svg" alt="Facebook" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
-            </a>
-            <a href="https://www.threads.net/@lesegal" className="text-muted-foreground hover:text-foreground transition-colors">
-              <img src="/images/threads.svg" alt="Threads" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
-            </a>
-            <a href="https://github.com/rockem" className="text-muted-foreground hover:text-foreground transition-colors">
-              <img src="/images/github.svg" alt="GitHub" className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity" />
-            </a>
+            <SocialImageLink imageName="instagram" url=""/>
+            <SocialImageLink imageName="facebook" url="https://www.facebook.com/lesegal"/>
+            <SocialImageLink imageName="threads" url="https://www.threads.net/@lesegal"/>
+            <SocialImageLink imageName="github" url="https://github.com/rockem"/>
           </div>
         </footer>
       </div>
