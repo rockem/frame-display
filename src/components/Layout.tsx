@@ -1,6 +1,7 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react";
+import React from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();

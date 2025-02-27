@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Github, Instagram, Linkedin, Facebook, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { loadConfig } from "@/utils/config";
@@ -116,16 +116,16 @@ const Index = () => {
       <footer className="py-6 border-t">
         <div className="flex justify-center gap-6">
           <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <Instagram className="h-6 w-6" />
+            <img src="images/instagram.svg" alt="GitHub" className="h-6 w-6 gray" />
           </a>
           <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <Facebook className="h-6 w-6" />
+            <img src="images/facebook.svg" alt="GitHub" className="h-6 w-6 gray" />
           </a>
           <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <Linkedin className="h-6 w-6" />
+            <img src="images/threads.svg" alt="GitHub" className="h-6 w-6 gray" />
           </a>
           <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            <Github className="h-6 w-6" />
+            <img src="images/github.svg" alt="GitHub" className="h-6 w-6 gray" />
           </a>
         </div>
       </footer>
