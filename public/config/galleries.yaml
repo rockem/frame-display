@@ -1,9 +1,65 @@
 
-# List of gallery names to load from /images/galleries/
+# List of gallery names to load
 galleries:
-  - nature
-  - street
-  - travel
+  - id: "1"
+    title: "Nature"
+    images:
+      - url: "/images/galleries/nature/_MG_8056.jpg"
+        alt: "Forest landscape"
+        exif:
+          camera: "Canon EOS 5D Mark III"
+          shutterSpeed: "1/125"
+          aperture: "11"
+          iso: "100"
+          focalLength: "24"
+      - url: "/images/galleries/nature/_MG_8078.jpg"
+        alt: "Mountain sunset"
+        exif:
+          camera: "Canon EOS 5D Mark III"
+          shutterSpeed: "1/60"
+          aperture: "8"
+          iso: "200"
+          focalLength: "70"
+      - url: "/images/galleries/nature/_MG_8085.jpg"
+        alt: "Misty forest"
+        exif:
+          camera: "Canon EOS 5D Mark III"
+          shutterSpeed: "1/30"
+          aperture: "5.6"
+          iso: "400"
+          focalLength: "35"
+      - url: "/images/galleries/nature/untitled-1589.jpg"
+        alt: "Peaceful lake"
+        exif:
+          camera: "Canon EOS 5D Mark III"
+          shutterSpeed: "1/250"
+          aperture: "16"
+          iso: "100"
+          focalLength: "24"
+  
+  - id: "2"
+    title: "Street"
+    images:
+      - url: "/images/galleries/street/L1001660.jpg"
+        alt: "Urban street scene"
+        exif:
+          camera: "Leica Q2"
+          shutterSpeed: "1/500"
+          aperture: "5.6"
+          iso: "400"
+          focalLength: "28"
+  
+  - id: "3"
+    title: "Travel"
+    images:
+      - url: "/images/galleries/travel/IMG_5897.jpg"
+        alt: "Exotic destination"
+        exif:
+          camera: "Sony A7R IV"
+          shutterSpeed: "1/800"
+          aperture: "8"
+          iso: "100"
+          focalLength: "35"
 
 # Featured images displayed on the home page
 featured:
