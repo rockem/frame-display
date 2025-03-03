@@ -14,19 +14,9 @@ vi.mock('exif-js', () => {
 });
 
 describe('exifUtils', () => {
-  let mockImage: HTMLImageElement;
-  
   beforeEach(() => {
     // Reset all mocks before each test
     vi.resetAllMocks();
-    
-    // Create a mock image element
-    mockImage = new Image();
-    
-    // Mock global Image constructor
-    global.Image = vi.fn().mockImplementation(() => {
-      return mockImage;
-    }) as unknown as typeof Image;
     
     // Set up EXIF.getData to call the callback immediately
     (EXIF.getData as any).mockImplementation((img: any, callback: Function) => {
@@ -41,12 +31,7 @@ describe('exifUtils', () => {
         .mockImplementationOnce(() => 'Canon') // Make
         .mockImplementationOnce(() => 'EOS 5D'); // Model
       
-      // Trigger image onload handler
-      setTimeout(() => {
-        mockImage.onload && mockImage.onload();
-      }, 0);
-      
-      const result = await getExifData('test.jpg');
+      const result = await getExifData('https://images.unsplash.com/photo-1461749280684-dccba630e2f6');
       
       expect(result).toBeTruthy();
       expect(result?.camera).toBe('Canon EOS 5D');
@@ -59,12 +44,7 @@ describe('exifUtils', () => {
         .mockImplementationOnce(() => undefined) // Model
         .mockImplementationOnce(() => 0.004); // ExposureTime (1/250)
       
-      // Trigger image onload handler
-      setTimeout(() => {
-        mockImage.onload && mockImage.onload();
-      }, 0);
-      
-      const result = await getExifData('test.jpg');
+      const result = await getExifData('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b');
       
       expect(result).toBeTruthy();
       expect(result?.shutterSpeed).toBe('1/250');
@@ -74,12 +54,7 @@ describe('exifUtils', () => {
       // Mock all relevant EXIF.getTag calls to return undefined
       (EXIF.getTag as any).mockReturnValue(undefined);
       
-      // Trigger image onload handler
-      setTimeout(() => {
-        mockImage.onload && mockImage.onload();
-      }, 0);
-      
-      const result = await getExifData('test.jpg');
+      const result = await getExifData('https://images.unsplash.com/photo-1518770660439-4636190af475');
       
       expect(result).toBeTruthy();
       // Expect all EXIF fields to be undefined
@@ -92,12 +67,20 @@ describe('exifUtils', () => {
     });
     
     it('should return null when image loading fails', async () => {
-      // Trigger image onerror handler
-      setTimeout(() => {
-        mockImage.onerror && mockImage.onerror();
-      }, 0);
+      // Override getData to simulate a failure
+      (EXIF.getData as any).mockImplementation((img: any, callback: Function) => {
+        // Don't call callback - simulate failure
+      });
       
-      const result = await getExifData('test.jpg');
+      // Make the image trigger onerror instead of onload
+      vi.spyOn(global.Image.prototype, 'onload', 'set').mockImplementation(function(this: HTMLImageElement, fn: any) {
+        // Instead of setting onload, we store the function and call onerror
+        setTimeout(() => {
+          this.onerror && this.onerror(new Event('error'));
+        }, 0);
+      });
+      
+      const result = await getExifData('invalid-image-url');
       
       expect(result).toBeNull();
     });
@@ -113,7 +96,7 @@ describe('exifUtils', () => {
         focalLength: '50'
       };
       
-      const result = await getExifDataWithFallback('https://images.unsplash.com/photo-12345', fallbackData);
+      const result = await getExifDataWithFallback('https://images.unsplash.com/photo-1649972904349-6e44c42644a7', fallbackData);
       
       expect(result).toBe(fallbackData);
     });
@@ -137,11 +120,6 @@ describe('exifUtils', () => {
       (EXIF.getTag as any)
         .mockImplementationOnce(() => 'Sony') // Make
         .mockImplementationOnce(() => 'A7'); // Model
-      
-      // Trigger image onload handler
-      setTimeout(() => {
-        mockImage.onload && mockImage.onload();
-      }, 0);
       
       const fallbackData: ExifData = {
         camera: 'Fallback Camera',
