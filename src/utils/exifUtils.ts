@@ -18,7 +18,7 @@ export async function getExifData(imageUrl: string): Promise<ExifData | null> {
       
       img.onload = function() {
         try {
-          EXIF.getData(img as any, function() {
+          EXIF.getData(img as never, function() {
             try {
               // Extract make and model for camera
               const make = EXIF.getTag(this, "Make");
