@@ -77,7 +77,7 @@ const Layout = ({children}: { children: React.ReactNode }) => {
         {children}
         <footer className="py-6 border-t mt-8">
           <div className="flex justify-center gap-6">
-            <SocialImageLink imageName="instagram" url=""/>
+            <SocialImageLink imageName="instagram" url="https://www.instagram.com/lesegal"/>
             <SocialImageLink imageName="facebook" url="https://www.facebook.com/lesegal"/>
             <SocialImageLink imageName="threads" url="https://www.threads.net/@lesegal"/>
             <SocialImageLink imageName="github" url="https://github.com/rockem"/>
