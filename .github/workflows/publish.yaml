@@ -29,5 +29,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.REPO_TOKEN }}
-          folder: ./dist
-          branch: gh-pages
+          publish_dir: ./dist
