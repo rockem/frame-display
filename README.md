@@ -1,4 +1,7 @@
-# Welcome to your Lovable project
+
+# Eli Segal Photography Portfolio
+
+This is a photography portfolio website for showcasing galleries of images.
 
 ## Project info
 
@@ -36,34 +39,32 @@ npm i
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Deployment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### GitHub Pages Deployment
 
-**Use GitHub Codespaces**
+This project is configured to deploy automatically to GitHub Pages when changes are pushed to the main branch. The deployment workflow is defined in `.github/workflows/publish.yaml`.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+To set up GitHub Pages deployment:
+
+1. Ensure your repository has GitHub Pages enabled in the repository settings
+2. Make sure the GitHub workflow has the necessary permissions (Settings > Actions > General > Workflow permissions)
+3. For the first deployment, you may need to run the workflow manually from the Actions tab
+
+Once deployed, your site will be available at: `https://<your-github-username>.github.io/<repository-name>/`
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+- React Router
+- GitHub Actions for CI/CD
 
-## How can I deploy this project?
+## Custom domain setup
 
-Simply open [Lovable](https://lovable.dev/projects/10c20928-f79e-45aa-ac1d-a12d6f0623d4) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)

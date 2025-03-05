@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  // Add base for GitHub Pages - this should match your repository name
+  // If your repo is username.github.io, you can leave this as '/'
+  base: './',
   plugins: [
     react(),
     mode === 'development' &&
