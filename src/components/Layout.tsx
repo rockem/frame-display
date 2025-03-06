@@ -9,7 +9,7 @@ const SocialImageLink = ({ imageName, url }: { imageName: string, url: string })
   return (
     <a href={url}
        className="text-muted-foreground hover:text-foreground transition-colors">
-      <img src={`/images/icons/${imageName}.svg`} alt={imageName}
+      <img src={`images/icons/${imageName}.svg`} alt={imageName}
            className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity"/>
     </a>
   );
