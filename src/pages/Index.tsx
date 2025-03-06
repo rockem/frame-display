@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -18,20 +17,12 @@ const Index = () => {
 
   useEffect(() => {
     loadConfig().then(async config => {
-      // Add demo EXIF data to featured images for testing
-      const processed = config.featured.map(image => {
-        // Use existing EXIF data or create demo data
-        const exifData = image.exif || {
-          camera: "Canon EOS R5",
-          shutterSpeed: "1/1000",
-          aperture: "2.8", 
-          iso: "100",
-          focalLength: "70"
-        };
-        
-        return { ...image, extractedExif: exifData };
+      const imagesWithExifPromises = config.featured.map(async image => {
+        const extractedExif = await getExifDataWithFallback(image.url, {});
+        return { ...image, extractedExif };
       });
       
+      const processed = await Promise.all(imagesWithExifPromises);
       setImages(processed);
       setIsLoaded(true);
     });

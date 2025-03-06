@@ -1,5 +1,6 @@
 
 import { parse } from 'yaml';
+import { getExifDataWithFallback } from './exifUtils';
 
 export interface ExifData {
   camera?: string;
@@ -49,11 +50,11 @@ export async function loadConfig(): Promise<GalleryConfig> {
       console.error(`Failed to load config: ${response.status} ${response.statusText}`);
       // Use default values if YAML loading fails
       featuredImages = [
-        { url: "https://images.unsplash.com/photo-1472396961693-142e6e269027", alt: "Two brown deer beside trees and mountain" },
-        { url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07", alt: "Orange flowers in city" },
-        { url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9", alt: "Abstract pine trees" },
-        { url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716", alt: "Majestic waterfall" },
-        { url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb", alt: "River between mountains" }
+        { url: "/images/galleries/nature/_MG_8056.jpg", alt: "Forest landscape" },
+        { url: "/images/galleries/nature/_MG_8078.jpg", alt: "Mountain sunset" },
+        { url: "/images/galleries/street/L1001660.jpg", alt: "Urban street scene" },
+        { url: "/images/galleries/travel/IMG_5897.jpg", alt: "Exotic destination" },
+        { url: "/images/galleries/nature/untitled-1589.jpg", alt: "Peaceful lake" }
       ];
       
       // Default galleries if loading fails
@@ -103,11 +104,11 @@ export async function loadConfig(): Promise<GalleryConfig> {
     return {
       galleries: {},
       featured: [
-        { url: "https://images.unsplash.com/photo-1472396961693-142e6e269027", alt: "Two brown deer beside trees and mountain" },
-        { url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07", alt: "Orange flowers in city" },
-        { url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9", alt: "Abstract pine trees" },
-        { url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716", alt: "Majestic waterfall" },
-        { url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb", alt: "River between mountains" }
+        { url: "/images/galleries/nature/_MG_8056.jpg", alt: "Forest landscape" },
+        { url: "/images/galleries/nature/_MG_8078.jpg", alt: "Mountain sunset" },
+        { url: "/images/galleries/street/L1001660.jpg", alt: "Urban street scene" },
+        { url: "/images/galleries/travel/IMG_5897.jpg", alt: "Exotic destination" },
+        { url: "/images/galleries/nature/untitled-1589.jpg", alt: "Peaceful lake" }
       ]
     };
   }

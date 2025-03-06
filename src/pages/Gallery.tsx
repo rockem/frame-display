@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
@@ -5,7 +6,7 @@ import Layout from "@/components/Layout";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { loadConfig } from "@/utils/config";
 import type { Gallery as GalleryType, Image as ConfigImage } from "@/utils/config";
-import { ExifData } from "@/utils/exifUtils";
+import { getExifDataWithFallback, ExifData } from "@/utils/exifUtils";
 
 interface ImageWithExif extends ConfigImage {
   extractedExif?: ExifData | null;
@@ -22,7 +23,7 @@ const Gallery = () => {
   useEffect(() => {
     console.log("Gallery page - Current gallery ID:", id);
     
-    loadConfig().then(config => {
+    loadConfig().then(async config => {
       console.log("Loaded config:", Object.keys(config.galleries));
       
       const foundGallery = Object.values(config.galleries).find(g => g.id === id);
@@ -33,14 +34,17 @@ const Gallery = () => {
         
         console.log(`Loading ${foundGallery.images.length} images for gallery:`, foundGallery.title);
         
-        // Process images and keep their original EXIF data, no demo data
-        const processedImages = foundGallery.images.map((image) => {
+        // Process images and load real EXIF data
+        const processedImagesPromises = foundGallery.images.map(async (image) => {
+          // Try to extract real EXIF data or use empty object as fallback
+          const extractedExif = await getExifDataWithFallback(image.url, {});
           return { 
             ...image, 
-            extractedExif: image.exif // Only use actual EXIF data if present
+            extractedExif
           };
         });
         
+        const processedImages = await Promise.all(processedImagesPromises);
         console.log(`Processed ${processedImages.length} images with EXIF data`);
         setImagesWithExif(processedImages);
         setIsLoading(false);
