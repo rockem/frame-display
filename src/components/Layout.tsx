@@ -5,11 +5,22 @@ import React, {useState, useEffect} from "react";
 import {loadConfig} from "@/utils/config";
 import type {Gallery} from "@/utils/config";
 
+// Helper function to get the correct base path for assets
+function getBasePath(): string {
+  // Check if we're running on GitHub Pages
+  const isGitHubPages = window.location.hostname.includes('github.io');
+  // Get the repository name from the pathname if on GitHub Pages
+  const repoName = isGitHubPages ? window.location.pathname.split('/')[1] : '';
+  
+  return isGitHubPages && repoName ? `/${repoName}` : '';
+}
+
 const SocialImageLink = ({ imageName, url }: { imageName: string, url: string }) => {
+  const basePath = getBasePath();
   return (
     <a href={url}
        className="text-muted-foreground hover:text-foreground transition-colors">
-      <img src={`images/icons/${imageName}.svg`} alt={imageName}
+      <img src={`${basePath}/images/icons/${imageName}.svg`} alt={imageName}
            className="h-6 w-6 opacity-60 hover:opacity-100 transition-opacity"/>
     </a>
   );

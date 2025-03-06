@@ -1,6 +1,5 @@
 
 import { parse } from 'yaml';
-import { getExifDataWithFallback } from './exifUtils';
 
 export interface ExifData {
   camera?: string;
@@ -30,10 +29,21 @@ export interface GalleryConfig {
   featured: Image[];
 }
 
+// Helper function to get the correct base path for assets
+function getBasePath(): string {
+  // Check if we're running on GitHub Pages
+  const isGitHubPages = window.location.hostname.includes('github.io');
+  // Get the repository name from the pathname if on GitHub Pages
+  const repoName = isGitHubPages ? window.location.pathname.split('/')[1] : '';
+  
+  return isGitHubPages && repoName ? `/${repoName}` : '';
+}
+
 export async function loadConfig(): Promise<GalleryConfig> {
   try {
-    // Load config from YAML
-    const response = await fetch('/config/galleries.yaml');
+    const basePath = getBasePath();
+    // Load config from YAML with the correct base path
+    const response = await fetch(`${basePath}/config/galleries.yaml`);
     let yamlGalleries: Gallery[] = [];
     let featuredImages: Image[] = [];
     
@@ -46,6 +56,25 @@ export async function loadConfig(): Promise<GalleryConfig> {
       featuredImages = parsedConfig.featured || [];
       
       console.log("Loaded galleries from YAML:", yamlGalleries.map(g => g.title));
+      
+      // Add base path to all image URLs
+      if (basePath) {
+        // Process gallery images
+        yamlGalleries.forEach(gallery => {
+          gallery.images.forEach(image => {
+            if (!image.url.startsWith('http')) {
+              image.url = `${basePath}${image.url}`;
+            }
+          });
+        });
+        
+        // Process featured images
+        featuredImages.forEach(image => {
+          if (!image.url.startsWith('http')) {
+            image.url = `${basePath}${image.url}`;
+          }
+        });
+      }
     } else {
       console.error(`Failed to load config: ${response.status} ${response.statusText}`);
       // Return empty config if YAML loading fails

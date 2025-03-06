@@ -8,6 +8,16 @@ import { loadConfig } from "@/utils/config";
 import type { Gallery as GalleryType, Image as ConfigImage } from "@/utils/config";
 import { getExifDataWithFallback, ExifData } from "@/utils/exifUtils";
 
+// Helper function to get the correct base path for assets
+function getBasePath(): string {
+  // Check if we're running on GitHub Pages
+  const isGitHubPages = window.location.hostname.includes('github.io');
+  // Get the repository name from the pathname if on GitHub Pages
+  const repoName = isGitHubPages ? window.location.pathname.split('/')[1] : '';
+  
+  return isGitHubPages && repoName ? `/${repoName}` : '';
+}
+
 interface ImageWithExif extends ConfigImage {
   extractedExif?: ExifData | null;
 }
@@ -119,6 +129,8 @@ const Gallery = () => {
     );
   }
 
+  const basePath = getBasePath();
+  
   return (
     <Layout>
       <div className="space-y-8">
@@ -141,7 +153,7 @@ const Gallery = () => {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
                     console.error("Failed to load image:", image.url);
-                    e.currentTarget.src = "/placeholder.svg";
+                    e.currentTarget.src = `${basePath}/placeholder.svg`;
                     e.currentTarget.alt = "Failed to load image";
                   }}
                 />
@@ -205,7 +217,7 @@ const Gallery = () => {
                     className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
                     onError={(e) => {
                       console.error("Failed to load image in modal:", imagesWithExif[selectedImageIndex].url);
-                      e.currentTarget.src = "/placeholder.svg";
+                      e.currentTarget.src = `${basePath}/placeholder.svg`;
                       e.currentTarget.alt = "Failed to load image";
                     }}
                   />

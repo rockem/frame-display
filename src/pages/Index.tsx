@@ -7,6 +7,16 @@ import { loadConfig } from "@/utils/config";
 import type { Image as ConfigImage } from "@/utils/config";
 import { getExifDataWithFallback, ExifData } from "@/utils/exifUtils";
 
+// Helper function to get the correct base path for assets
+function getBasePath(): string {
+  // Check if we're running on GitHub Pages
+  const isGitHubPages = window.location.hostname.includes('github.io');
+  // Get the repository name from the pathname if on GitHub Pages
+  const repoName = isGitHubPages ? window.location.pathname.split('/')[1] : '';
+  
+  return isGitHubPages && repoName ? `/${repoName}` : '';
+}
+
 interface ImageWithExif extends ConfigImage {
   extractedExif?: ExifData | null;
 }
@@ -67,6 +77,8 @@ const Index = () => {
     return !!exif && Object.values(exif).some(value => !!value);
   };
 
+  const basePath = getBasePath();
+
   return (
     <Layout>
       <section className="py-8">
@@ -86,6 +98,11 @@ const Index = () => {
                     src={image.url}
                     alt={image.alt}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      console.error("Failed to load image:", image.url);
+                      e.currentTarget.src = `${basePath}/placeholder.svg`;
+                      e.currentTarget.alt = "Failed to load image";
+                    }}
                   />
                   {showExif && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -145,6 +162,11 @@ const Index = () => {
                   src={images[selectedImageIndex].url}
                   alt={images[selectedImageIndex].alt}
                   className="max-w-full max-h-[95vh] w-auto h-auto object-contain"
+                  onError={(e) => {
+                    console.error("Failed to load image in modal:", images[selectedImageIndex].url);
+                    e.currentTarget.src = `${basePath}/placeholder.svg`;
+                    e.currentTarget.alt = "Failed to load image";
+                  }}
                 />
                 
                 <button
