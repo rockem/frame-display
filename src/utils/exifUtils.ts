@@ -104,13 +104,34 @@ export async function getExifDataWithFallback(imageUrl: string, fallbackData?: E
     // For local or Unsplash images, we'll use fallback data since EXIF extraction often fails due to CORS
     if (imageUrl.includes('unsplash.com') || imageUrl.startsWith('/')) {
       console.log("Using fallback data for image:", imageUrl);
-      return fallbackData || null;
+      
+      // Only return fallback data if it has at least one valid property
+      if (fallbackData && Object.values(fallbackData).some(value => !!value)) {
+        return fallbackData;
+      }
+      return null;
     }
     
     const exifData = await getExifData(imageUrl);
-    return exifData || fallbackData || null;
+    
+    // Check if exifData has any valid properties
+    if (exifData && Object.values(exifData).some(value => !!value)) {
+      return exifData;
+    }
+    
+    // Check if fallbackData has any valid properties
+    if (fallbackData && Object.values(fallbackData).some(value => !!value)) {
+      return fallbackData;
+    }
+    
+    return null;
   } catch (error) {
     console.error("Error fetching EXIF data:", error);
-    return fallbackData || null;
+    
+    // Only return fallback data if it has at least one valid property
+    if (fallbackData && Object.values(fallbackData).some(value => !!value)) {
+      return fallbackData;
+    }
+    return null;
   }
 }

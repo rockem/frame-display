@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -61,12 +62,18 @@ const Index = () => {
     return <Layout>Loading...</Layout>;
   }
 
+  // Helper function to check if EXIF data is available and has at least one property
+  const hasValidExif = (exif?: ExifData | null): boolean => {
+    return !!exif && Object.values(exif).some(value => !!value);
+  };
+
   return (
     <Layout>
       <section className="py-8">
         <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
           {images.map((image, index) => {
             const exif = image.extractedExif;
+            const showExif = hasValidExif(exif);
             
             return (
               <div 
@@ -80,29 +87,31 @@ const Index = () => {
                     alt={image.alt}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Camera className="h-4 w-4" />
-                      <span>{exif?.camera || "Unknown Camera"}</span>
+                  {showExif && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Camera className="h-4 w-4" />
+                        <span>{exif?.camera || "Unknown Camera"}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
+                        {exif?.shutterSpeed && (
+                          <div>Shutter: {exif.shutterSpeed}</div>
+                        )}
+                        {exif?.aperture && (
+                          <div>ƒ/{exif.aperture}</div>
+                        )}
+                        {exif?.iso && (
+                          <div>ISO {exif.iso}</div>
+                        )}
+                        {exif?.focalLength && (
+                          <div>{exif.focalLength}mm</div>
+                        )}
+                        {exif?.captureDate && (
+                          <div>{exif.captureDate.toLocaleDateString()}</div>
+                        )}
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
-                      {exif?.shutterSpeed && (
-                        <div>Shutter: {exif.shutterSpeed}</div>
-                      )}
-                      {exif?.aperture && (
-                        <div>ƒ/{exif.aperture}</div>
-                      )}
-                      {exif?.iso && (
-                        <div>ISO {exif.iso}</div>
-                      )}
-                      {exif?.focalLength && (
-                        <div>{exif.focalLength}mm</div>
-                      )}
-                      {exif?.captureDate && (
-                        <div>{exif.captureDate.toLocaleDateString()}</div>
-                      )}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             );

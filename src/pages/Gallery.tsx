@@ -91,6 +91,11 @@ const Gallery = () => {
     }
   }, [selectedImageIndex]);
 
+  // Helper function to check if EXIF data is available and has at least one property
+  const hasValidExif = (exif?: ExifData | null): boolean => {
+    return !!exif && Object.values(exif).some(value => !!value);
+  };
+
   if (isLoading) {
     return <Layout><div className="flex justify-center py-12">Loading gallery...</div></Layout>;
   }
@@ -121,10 +126,8 @@ const Gallery = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {imagesWithExif.map((image, index) => {
             const exif = image.extractedExif;
-            // Only show EXIF data if we have at least one valid EXIF property
-            const hasExifData = exif && (
-              exif.camera || exif.shutterSpeed || exif.aperture || exif.iso || exif.focalLength
-            );
+            // Check if we have valid EXIF data to display
+            const showExif = hasValidExif(exif);
             
             return (
               <div 
@@ -142,26 +145,26 @@ const Gallery = () => {
                     e.currentTarget.alt = "Failed to load image";
                   }}
                 />
-                {hasExifData && (
+                {showExif && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     <div className="flex items-center gap-2 text-sm">
                       <Camera className="h-4 w-4" />
-                      <span>{exif.camera || "Unknown Camera"}</span>
+                      <span>{exif?.camera || "Unknown Camera"}</span>
                     </div>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
-                      {exif.shutterSpeed && (
+                      {exif?.shutterSpeed && (
                         <div>Shutter: {exif.shutterSpeed}</div>
                       )}
-                      {exif.aperture && (
+                      {exif?.aperture && (
                         <div>ƒ/{exif.aperture}</div>
                       )}
-                      {exif.iso && (
+                      {exif?.iso && (
                         <div>ISO {exif.iso}</div>
                       )}
-                      {exif.focalLength && (
+                      {exif?.focalLength && (
                         <div>{exif.focalLength}mm</div>
                       )}
-                      {exif.captureDate && (
+                      {exif?.captureDate && (
                         <div>{exif.captureDate.toLocaleDateString()}</div>
                       )}
                     </div>
